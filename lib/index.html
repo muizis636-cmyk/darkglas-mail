@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DarkGlass Mail</title>
+  <style>
+    :root {
+      --bg: #0f111a;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text: #e2e8f0;
+      --accent: #38bdf8;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      margin: 0; padding: 20px;
+      display: flex; justify-content: center; align-items: center; min-height: 100vh;
+    }
+    .container {
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      padding: 30px; border-radius: 16px; width: 100%; max-width: 500px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    h1 { font-size: 1.5rem; margin-top: 0; color: var(--accent); text-align: center; }
+    .email-box {
+      background: rgba(0, 0, 0, 0.2); padding: 12px; border-radius: 8px;
+      border: 1px solid var(--glass-border); text-align: center; font-family: monospace;
+      font-size: 1.1rem; margin-bottom: 20px; word-break: break-all;
+    }
+    button {
+      background: var(--accent); color: #000; border: none; padding: 10px 16px;
+      border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>DarkGlass Mail</h1>
+    <div class="email-box" id="emailDisplay">Memuat email...</div>
+    <button onclick="location.reload()">Buat Email Baru</button>
+  </div>
+  <script>
+    fetch('/api/domains')
+      .then(r => r.json())
+      .then(data => {
+        if(data.success && data.domains.length) {
+          document.getElementById('emailDisplay').innerText = 'user_' + Math.floor(Math.random()*1000) + '@' + data.domains[0];
+        }
+      }).catch(() => document.getElementById('emailDisplay').innerText = 'Gagal memuat');
+  </script>
+</body>
+</html>
